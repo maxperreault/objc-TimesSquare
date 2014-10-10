@@ -30,6 +30,7 @@
 
 @end
 
+static const NSInteger maxValueForRange = 14;
 
 @implementation TSQCalendarRowCell
 
@@ -45,11 +46,11 @@
 
 - (void)configureButton:(UIButton *)button;
 {
-    button.titleLabel.font = [UIFont boldSystemFontOfSize:19.f];
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:17.f];
     button.titleLabel.shadowOffset = self.shadowOffset;
     button.adjustsImageWhenDisabled = NO;
-    [button setTitleColor:self.textColor forState:UIControlStateNormal];
-    [button setTitleColor:[self.textColor colorWithAlphaComponent:0.5f] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor colorWithWhite:0.11 alpha:0.73] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithWhite:0.11 alpha:0.73] forState:UIControlStateDisabled];
     [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setBackgroundImage:nil forState:UIControlStateNormal];
 }
@@ -58,16 +59,28 @@
 {
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
-    [button setBackgroundImage:[self selectedBackgroundImage] forState:UIControlStateNormal];
+    
+    if (self.calendarView.selectionMode == TSQCalendarSelectionModeDateRange) {
+        if ((self.calendarView.selectedStartDate) && (!self.calendarView.selectedEndDate)) {
+            [button setBackgroundImage:[self selectedBackgroundImage] forState:UIControlStateNormal];
+        } else if ((self.calendarView.selectedStartDate) && (self.calendarView.selectedEndDate)){
+            [button setBackgroundImage:[self selectedMiddleDaysOfRangeBackgroundImage] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0] forState:UIControlStateDisabled];
+        }
+    }
+    
     [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
 }
 
 - (void)configureTodayButton:(UIButton *)button;
 {
-    [button setTitleColor:self.todayTextColor forState:UIControlStateNormal];
+    //[button setTitleColor:self.todayTextColor forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithWhite:0.11 alpha:0.73] forState:UIControlStateNormal];
     [button setBackgroundImage:[self todayBackgroundImage] forState:UIControlStateNormal];
-    [button setTitleShadowColor:self.todayShadowColor forState:UIControlStateNormal];
+    //[button setTitleShadowColor:self.todayShadowColor forState:UIControlStateNormal];
+    [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
 }
 
@@ -75,8 +88,7 @@
 {
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
-    UIImage *firstDayRangeImage = [UIImage imageNamed:@"calendar_first_selected"];
-    [button setBackgroundImage:firstDayRangeImage forState:UIControlStateNormal];
+    [button setBackgroundImage:[self selectedFirstDayOfRangeBackgroundImage] forState:UIControlStateNormal];
     [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
 }
@@ -85,8 +97,7 @@
 {
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
-    UIImage *lastDayRangeImage = [UIImage imageNamed:@"calendar_last_selected"];
-    [button setBackgroundImage:lastDayRangeImage forState:UIControlStateNormal];
+    [button setBackgroundImage:[self selectedLastDayOfRangeBackgroundImage] forState:UIControlStateNormal];
     [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
 }
@@ -194,13 +205,24 @@
         if (self.calendarView.selectedEndDate) {
             self.calendarView.selectedStartDate = nil;
         } else if (self.calendarView.selectedStartDate && ([selectedDate compare:self.calendarView.selectedStartDate] == NSOrderedDescending)) {
-            self.calendarView.selectedEndDate = selectedDate;
+            if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] <= maxValueForRange) {
+                self.calendarView.selectedEndDate = selectedDate;
+            }
         } else if ([self.calendarView.selectedStartDate isEqual:selectedDate]) {
             self.calendarView.selectedStartDate = nil;
         } else {
-            self.calendarView.selectedStartDate = selectedDate;
+            if ([self differenceInDaysBetweenStartDate:[NSDate date] andEndDate:selectedDate] >= 0) {
+                self.calendarView.selectedStartDate = selectedDate;
+            }
         }
     }
+}
+
+- (NSInteger)differenceInDaysBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate
+{
+    NSUInteger unitFlags = NSDayCalendarUnit;
+    NSDateComponents *components = [self.calendar components:unitFlags fromDate:startDate toDate:endDate options: 0];
+    return [components day];
 }
 
 - (void)layoutSubviews;
@@ -258,10 +280,18 @@
     NSInteger indexOfButtonForDate = [self indexOfColumnForDate:date];
     if (indexOfButtonForDate >= 0) {
         buttonStates[indexOfButtonForDate] = 1;
+        if (self.calendarView.selectedStartDate && self.calendarView.selectedEndDate) {
+            if ([self.calendarView.selectedStartDate isEqual:date]) {
+                buttonStates[indexOfButtonForDate] = 2;
+            } else if ([self.calendarView.selectedEndDate isEqual:date]) {
+                buttonStates[indexOfButtonForDate] = 3;
+            }
+        }
     }
     
     [self setNeedsLayout];
 }
+
 
 - (NSDateFormatter *)dayFormatter;
 {

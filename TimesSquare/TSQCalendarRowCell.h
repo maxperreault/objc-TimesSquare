@@ -31,6 +31,18 @@
  */
 @property (nonatomic, weak, readonly) UIImage *selectedBackgroundImage;
 
+/** The background image for the first day of the selected range.
+ */
+@property (nonatomic, weak, readonly) UIImage *selectedFirstDayOfRangeBackgroundImage;
+
+/** The background image for the last day of the selected range.
+ */
+@property (nonatomic, weak, readonly) UIImage *selectedLastDayOfRangeBackgroundImage;
+
+/** The background image for the middle days of the selected range.
+ */
+@property (nonatomic, weak, readonly) UIImage *selectedMiddleDaysOfRangeBackgroundImage;
+
 /** The background image for a day that's "today".
  
  This is dark gray in the system's built-in Calendar app. You probably want to use a stretchable image.
