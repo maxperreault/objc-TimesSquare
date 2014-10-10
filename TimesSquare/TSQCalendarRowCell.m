@@ -71,6 +71,26 @@
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
 }
 
+- (void)configureFirstButton:(UIButton *)button
+{
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+    UIImage *firstDayRangeImage = [UIImage imageNamed:@"calendar_first_selected"];
+    [button setBackgroundImage:firstDayRangeImage forState:UIControlStateNormal];
+    [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
+    button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
+}
+
+- (void)configureLastButton:(UIButton *)button
+{
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+    UIImage *lastDayRangeImage = [UIImage imageNamed:@"calendar_last_selected"];
+    [button setBackgroundImage:lastDayRangeImage forState:UIControlStateNormal];
+    [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
+    button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
+}
+
 - (void)createDayButtons;
 {
     NSMutableArray *dayButtons = [NSMutableArray arrayWithCapacity:self.daysInWeek];
@@ -201,9 +221,13 @@
     
     dayButton.frame = rect;
     notThisMonthButton.frame = rect;
-
+    
     if (buttonStates[index] == 1) {
         [self configureSelectedButton:dayButton];
+    }  else  if (buttonStates[index] == 2) {
+        [self configureFirstButton:dayButton];
+    } else  if (buttonStates[index] == 3) {
+        [self configureLastButton:dayButton];
     } else if (self.indexOfTodayButton == (NSInteger)index) {
         [self configureTodayButton:dayButton];
     } else {
@@ -211,6 +235,7 @@
         if (!dayButton.enabled) {
             [dayButton setTitleColor:[self.textColor colorWithAlphaComponent:0.5f] forState:UIControlStateNormal];
         }
+        
     }
 }
 
