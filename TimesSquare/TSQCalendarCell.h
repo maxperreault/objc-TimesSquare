@@ -59,6 +59,24 @@
  */
 @property (nonatomic, strong) UIColor *textColor;
 
+/** The text color when disabled.
+ 
+ This is used for all text the cell draws if date disabled
+ */
+@property (nonatomic, strong) UIColor *textColorDisabled;
+
+/** The shadow of text color.       
+ */
+@property (nonatomic, strong) UIColor *textColorShadow;
+
+/** Text Color for the first and last day of range.
+ */
+@property (nonatomic, strong) UIColor *textColorFirstAndlastRangeDay;
+
+/** Text Color for the middles days of range.
+ */
+@property (nonatomic, strong) UIColor *textColorMiddleRangeDays;
+
 /** The text shadow color.
  
  This is used for all text the cell draws; default is white.

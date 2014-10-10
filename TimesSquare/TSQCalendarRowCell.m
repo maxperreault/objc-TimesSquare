@@ -49,9 +49,9 @@ static const NSInteger maxValueForRange = 14;
     button.titleLabel.font = [UIFont boldSystemFontOfSize:17.f];
     button.titleLabel.shadowOffset = self.shadowOffset;
     button.adjustsImageWhenDisabled = NO;
-    [button setTitleColor:[UIColor colorWithWhite:0.11 alpha:0.73] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithWhite:0.11 alpha:0.73] forState:UIControlStateDisabled];
-    [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:self.textColor forState:UIControlStateNormal];
+    [button setTitleColor:self.textColorDisabled forState:UIControlStateDisabled];
+    [button setTitleShadowColor:self.textColorShadow forState:UIControlStateNormal];
     [button setBackgroundImage:nil forState:UIControlStateNormal];
 }
 
@@ -65,8 +65,8 @@ static const NSInteger maxValueForRange = 14;
             [button setBackgroundImage:[self selectedBackgroundImage] forState:UIControlStateNormal];
         } else if ((self.calendarView.selectedStartDate) && (self.calendarView.selectedEndDate)){
             [button setBackgroundImage:[self selectedMiddleDaysOfRangeBackgroundImage] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0] forState:UIControlStateDisabled];
+            [button setTitleColor:self.textColorMiddleRangeDays forState:UIControlStateNormal];
+            [button setTitleColor:self.textColorMiddleRangeDays forState:UIControlStateDisabled];
         }
     }
     
@@ -76,18 +76,16 @@ static const NSInteger maxValueForRange = 14;
 
 - (void)configureTodayButton:(UIButton *)button;
 {
-    //[button setTitleColor:self.todayTextColor forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithWhite:0.11 alpha:0.73] forState:UIControlStateNormal];
+    [button setTitleColor:self.todayTextColor forState:UIControlStateNormal];
     [button setBackgroundImage:[self todayBackgroundImage] forState:UIControlStateNormal];
-    //[button setTitleShadowColor:self.todayShadowColor forState:UIControlStateNormal];
-    [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleShadowColor:self.todayShadowColor forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
 }
 
 - (void)configureFirstButton:(UIButton *)button
 {
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+    [button setTitleColor: self.textColorFirstAndlastRangeDay forState:UIControlStateNormal];
+    [button setTitleColor: self.textColorFirstAndlastRangeDay forState:UIControlStateDisabled];
     [button setBackgroundImage:[self selectedFirstDayOfRangeBackgroundImage] forState:UIControlStateNormal];
     [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
@@ -95,8 +93,8 @@ static const NSInteger maxValueForRange = 14;
 
 - (void)configureLastButton:(UIButton *)button
 {
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+    [button setTitleColor: self.textColorFirstAndlastRangeDay forState:UIControlStateNormal];
+    [button setTitleColor: self.textColorFirstAndlastRangeDay forState:UIControlStateDisabled];
     [button setBackgroundImage:[self selectedLastDayOfRangeBackgroundImage] forState:UIControlStateNormal];
     [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.75f] forState:UIControlStateNormal];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
