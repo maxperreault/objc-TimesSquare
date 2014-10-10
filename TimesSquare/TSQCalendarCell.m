@@ -51,6 +51,7 @@
     
     self.textColorFirstAndlastRangeDay = [UIColor whiteColor];
     self.textColorMiddleRangeDays = [UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0];
+    self.textFont = [UIFont systemFontOfSize:16.f];
     
     return self;
 }
