@@ -69,12 +69,11 @@
  */
 @property (nonatomic, strong) UIColor *monthTextColor;
 
-/** The Month text color.
+/** The Month text shadow color.
  */
 @property (nonatomic, strong) UIColor *monthTextShadowColor;
 
 /** The Month text font.
-
  */
 @property (nonatomic, strong) UIFont *monthTextFont;
 
