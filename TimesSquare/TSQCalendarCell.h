@@ -65,18 +65,6 @@
  */
 @property (nonatomic, strong) UIFont *textFont;
 
-/** The Month text color.
- */
-@property (nonatomic, strong) UIColor *monthTextColor;
-
-/** The Month text shadow color.
- */
-@property (nonatomic, strong) UIColor *monthTextShadowColor;
-
-/** The Month text font.
- */
-@property (nonatomic, strong) UIFont *monthTextFont;
-
 /** The text color when disabled.
  
  This is used for all text the cell draws if date disabled

@@ -52,10 +52,7 @@
     self.textColorFirstAndlastRangeDay = [UIColor whiteColor];
     self.textColorMiddleRangeDays = [UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0];
     self.textFont = [UIFont systemFontOfSize:16.f];
-    self.monthTextColor =  [UIColor blackColor];
-    self.monthTextShadowColor = [UIColor whiteColor];
-    self.monthTextFont = [UIFont boldSystemFontOfSize:17.f];
-    
+
     return self;
 }
 
