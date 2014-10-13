@@ -185,4 +185,11 @@ typedef enum {
  */
 - (void)calendarView:(TSQCalendarView *)calendarView didSelectEndDate:(NSDate *)date;
 
+/** Tells the delegate that selected dates has been resetted.
+ 
+ @param calendarView The calendar view that is selecting a date.
+ */
+- (void)resetSelectedDatesForCalendarView:(TSQCalendarView *)calendarView;
+
+
 @end

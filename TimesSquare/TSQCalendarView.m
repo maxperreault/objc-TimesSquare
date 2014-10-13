@@ -180,6 +180,10 @@
     _selectedDate = nil;
     _selectedStartDate = nil;
     _selectedEndDate = nil;
+    
+    if ([self.delegate respondsToSelector:@selector(resetSelectedDatesForCalendarView:)]) {
+        [self.delegate resetSelectedDatesForCalendarView:self];
+    }
 }
 
 - (void)resetSelectedDateRange
