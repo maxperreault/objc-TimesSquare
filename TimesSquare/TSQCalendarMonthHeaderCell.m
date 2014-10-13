@@ -10,7 +10,7 @@
 #import "TSQCalendarMonthHeaderCell.h"
 
 
-static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 5.f;
+static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 16.f;
 
 
 @interface TSQCalendarMonthHeaderCell ()
@@ -37,7 +37,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 5.f;
 
 + (CGFloat)cellHeight;
 {
-    return 50.0f;
+    return 60.0f;
 }
 
 - (NSDateFormatter *)monthDateFormatter;
@@ -67,7 +67,8 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 5.f;
 
     CGRect bounds = self.contentView.bounds;
     bounds.size.height -= TSQCalendarMonthHeaderCellMonthsHeight;
-    self.textLabel.frame = CGRectOffset(bounds, 0.0f, 5.0f);
+    self.textLabel.frame = CGRectOffset(bounds, 0.0f, TSQCalendarMonthHeaderCellMonthsHeight);
+    self.textLabel.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)layoutViewsForColumnAtIndex:(NSUInteger)index inRect:(CGRect)rect;
