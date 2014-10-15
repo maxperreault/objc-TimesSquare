@@ -191,18 +191,12 @@ static const NSInteger maxValueForRange = 14;
     [self setNeedsLayout];
 }
 
-- (IBAction)dateButtonPressed:(id)sender;
+- (void)selectDate:(NSDate *)selectedDate
 {
-    NSDateComponents *offset = [NSDateComponents new];
-    offset.day = [self.dayButtons indexOfObject:sender];
-    NSDate *selectedDate = [self.calendar dateByAddingComponents:offset toDate:self.beginningDate options:0];
-    
     if (self.calendarView.selectionMode == TSQCalendarSelectionModeDay) {
         self.calendarView.selectedDate = ([self.calendarView.selectedDate isEqual:selectedDate]) ? nil : selectedDate;
     } else {
-        if (self.calendarView.selectedEndDate) {
-            self.calendarView.selectedStartDate = nil;
-        } else if (self.calendarView.selectedStartDate && ([selectedDate compare:self.calendarView.selectedStartDate] == NSOrderedDescending)) {
+        if (self.calendarView.selectedStartDate && ([selectedDate compare:self.calendarView.selectedStartDate] == NSOrderedDescending)) {
             if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] <= maxValueForRange) {
                 self.calendarView.selectedEndDate = selectedDate;
             }
@@ -214,6 +208,15 @@ static const NSInteger maxValueForRange = 14;
             }
         }
     }
+}
+
+- (IBAction)dateButtonPressed:(id)sender;
+{
+    NSDateComponents *offset = [NSDateComponents new];
+    offset.day = [self.dayButtons indexOfObject:sender];
+    NSDate *selectedDate = [self.calendar dateByAddingComponents:offset toDate:self.beginningDate options:0];
+    
+    [self selectDate:selectedDate];
 }
 
 - (NSInteger)differenceInDaysBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate
