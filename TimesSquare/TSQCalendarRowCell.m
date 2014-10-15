@@ -193,12 +193,16 @@ static const NSInteger maxValueForRange = 14;
 
 - (void)selectDate:(NSDate *)selectedDate
 {
+    if ([self differenceInDaysBetweenStartDate:[NSDate new] andEndDate:selectedDate] <= 0) {
+        return;
+    }
+    
     if (self.calendarView.selectionMode == TSQCalendarSelectionModeDay) {
         self.calendarView.selectedDate = ([self.calendarView.selectedDate isEqual:selectedDate]) ? nil : selectedDate;
     } else {
         if (self.calendarView.selectedEndDate) {
-            self.calendarView.selectedStartDate = selectedDate;
             self.calendarView.selectedEndDate = nil;
+            self.calendarView.selectedStartDate = selectedDate;
         } else if (self.calendarView.selectedStartDate && ([selectedDate compare:self.calendarView.selectedStartDate] == NSOrderedDescending)) {
             if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] <= maxValueForRange) {
                 self.calendarView.selectedEndDate = selectedDate;
