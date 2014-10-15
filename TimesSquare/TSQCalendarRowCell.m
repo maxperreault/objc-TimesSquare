@@ -193,7 +193,7 @@ static const NSInteger maxValueForRange = 14;
 
 - (void)selectDate:(NSDate *)selectedDate
 {
-    if ([self differenceInDaysBetweenStartDate:[NSDate new] andEndDate:selectedDate] <= 0) {
+    if ([self differenceInDaysBetweenStartDate:[NSDate new] andEndDate:selectedDate] < 0) {
         return;
     }
     

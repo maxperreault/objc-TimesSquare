@@ -99,7 +99,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 
     CGRect bounds = self.contentView.bounds;
     bounds.size.height -= TSQCalendarMonthHeaderCellMonthsHeight;
-    self.textLabel.frame = CGRectOffset(bounds, 0.0f, TSQCalendarMonthHeaderCellMonthsHeight);
+    self.textLabel.frame = CGRectOffset(bounds, 0.0f, 5);
     self.textLabel.backgroundColor = [UIColor whiteColor];
 }
 
@@ -107,6 +107,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 {
     UILabel *label = self.headerLabels[index];
     CGRect labelFrame = rect;
+    label.backgroundColor = [UIColor whiteColor];
     labelFrame.size.height = TSQCalendarMonthHeaderCellMonthsHeight;
     labelFrame.origin.y = self.bounds.size.height - TSQCalendarMonthHeaderCellMonthsHeight;
     label.frame = labelFrame;
