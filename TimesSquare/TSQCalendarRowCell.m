@@ -153,6 +153,7 @@ static const NSInteger maxValueForRange = 14;
         [self.notThisMonthButtons[index] setAccessibilityLabel:accessibilityLabel];
         
         NSDateComponents *thisDateComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
+        NSDateComponents *todayComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:[NSDate date]];
 
         [self.notThisMonthButtons[index] setHidden:YES];
         [self.dayButtons[index] setHidden:NO];
@@ -170,6 +171,10 @@ static const NSInteger maxValueForRange = 14;
             }
             UIButton *button = self.dayButtons[index];
             button.enabled = ![self.calendarView.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)] || [self.calendarView.delegate calendarView:self.calendarView shouldSelectDate:date];
+            
+            if (self.disablesDatesEarlierThanToday) {
+                button.enabled = button.enabled && (todayComponents.day < thisDateComponents.day);
+            }
         }
 
         date = [self.calendar dateByAddingComponents:offset toDate:date options:0];

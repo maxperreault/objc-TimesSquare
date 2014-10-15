@@ -118,6 +118,7 @@
  Defaults to YES.
  */
 @property (nonatomic) BOOL showsNotThisMonth;
+@property (nonatomic) BOOL disablesDatesEarlierThanToday;
 
 /** @name Initialization */
 
