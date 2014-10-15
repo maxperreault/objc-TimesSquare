@@ -200,7 +200,7 @@ static const NSInteger maxValueForRange = 14;
     self.calendarView.selectionError = nil;
     
     if ([self differenceInDaysBetweenStartDate:[NSDate new] andEndDate:selectedDate] < 0) {
-        self.calendarView.selectionError = TSQCalendarErrorCannotSelectPreviousDayError;
+        self.calendarView.selectionError = TSQCalendarErrorAttemptToSelectDisabledDate;
         return;
     }
     
