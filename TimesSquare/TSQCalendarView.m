@@ -283,6 +283,15 @@
     }
 }
 
+- (void)setSelectionError:(TSQCalendarError *)selectionError
+{
+    _selectionError = selectionError;
+    
+    if ([self.delegate respondsToSelector:@selector(calendarView:didFailToSelectDateWithError:)]) {
+        [self.delegate calendarView:self didFailToSelectDateWithError:selectionError];
+    }
+}
+
 - (void)updateSelectedDates
 {
     for (NSDate *date in _selectedDates) {

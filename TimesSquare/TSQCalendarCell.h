@@ -118,6 +118,11 @@
  Defaults to YES.
  */
 @property (nonatomic) BOOL showsNotThisMonth;
+
+/** Whether or not to allow selection for the  days that are earlier than the current day
+ 
+ Defaults to YES.
+ */
 @property (nonatomic) BOOL disablesDatesEarlierThanToday;
 
 /** @name Initialization */

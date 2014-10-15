@@ -153,7 +153,6 @@ static const NSInteger maxValueForRange = 14;
         [self.notThisMonthButtons[index] setAccessibilityLabel:accessibilityLabel];
         
         NSDateComponents *thisDateComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
-        NSDateComponents *todayComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:[NSDate date]];
 
         [self.notThisMonthButtons[index] setHidden:YES];
         [self.dayButtons[index] setHidden:NO];
@@ -172,8 +171,8 @@ static const NSInteger maxValueForRange = 14;
             UIButton *button = self.dayButtons[index];
             button.enabled = ![self.calendarView.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)] || [self.calendarView.delegate calendarView:self.calendarView shouldSelectDate:date];
             
-            if (self.disablesDatesEarlierThanToday) {
-                button.enabled = button.enabled && (todayComponents.day < thisDateComponents.day);
+            if (self.disablesDatesEarlierThanToday && (self.todayDateComponents.year == thisDateComponents.year && self.todayDateComponents.month == thisDateComponents.month && thisDateComponents.day < self.todayDateComponents.day)) {
+                button.enabled = NO;
             }
         }
 
@@ -198,7 +197,10 @@ static const NSInteger maxValueForRange = 14;
 
 - (void)selectDate:(NSDate *)selectedDate
 {
+    self.calendarView.selectionError = nil;
+    
     if ([self differenceInDaysBetweenStartDate:[NSDate new] andEndDate:selectedDate] < 0) {
+        self.calendarView.selectionError = TSQCalendarErrorCannotSelectPreviousDayError;
         return;
     }
     
@@ -211,6 +213,8 @@ static const NSInteger maxValueForRange = 14;
         } else if (self.calendarView.selectedStartDate && ([selectedDate compare:self.calendarView.selectedStartDate] == NSOrderedDescending)) {
             if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] <= maxValueForRange) {
                 self.calendarView.selectedEndDate = selectedDate;
+            } else {
+                self.calendarView.selectionError = TSQCalendarErrorSelectionMaxRange;
             }
         } else if ([self.calendarView.selectedStartDate isEqual:selectedDate]) {
             self.calendarView.selectedStartDate = nil;
