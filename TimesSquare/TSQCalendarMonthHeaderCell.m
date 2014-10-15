@@ -10,7 +10,7 @@
 #import "TSQCalendarMonthHeaderCell.h"
 
 
-static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
+static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 16.f;
 
 
 @interface TSQCalendarMonthHeaderCell ()
@@ -37,7 +37,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 
 + (CGFloat)cellHeight;
 {
-    return 65.0f;
+    return 60.0f;
 }
 
 - (NSDateFormatter *)monthDateFormatter;
@@ -54,40 +54,10 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 
 - (void)createHeaderLabels;
 {
-    NSDate *referenceDate = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
-    NSDateComponents *offset = [NSDateComponents new];
-    offset.day = 1;
-    NSMutableArray *headerLabels = [NSMutableArray arrayWithCapacity:self.daysInWeek];
-    
-    NSDateFormatter *dayFormatter = [NSDateFormatter new];
-    dayFormatter.calendar = self.calendar;
-    dayFormatter.dateFormat = @"cccccc";
-    
-    for (NSUInteger index = 0; index < self.daysInWeek; index++) {
-        [headerLabels addObject:@""];
-    }
-    
-    for (NSUInteger index = 0; index < self.daysInWeek; index++) {
-        NSInteger ordinality = [self.calendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSWeekCalendarUnit forDate:referenceDate];
-        UILabel *label = [[UILabel alloc] initWithFrame:self.frame];
-        label.textAlignment = UITextAlignmentCenter;
-        label.text = [dayFormatter stringFromDate:referenceDate];
-        label.font = [UIFont boldSystemFontOfSize:12.f];
-        label.backgroundColor = self.backgroundColor;
-        label.textColor = self.textColor;
-        label.shadowColor = [UIColor whiteColor];
-        label.shadowOffset = self.shadowOffset;
-        [label sizeToFit];
-        headerLabels[ordinality - 1] = label;
-        [self.contentView addSubview:label];
-        
-        referenceDate = [self.calendar dateByAddingComponents:offset toDate:referenceDate options:0];
-    }
-    
-    self.headerLabels = headerLabels;
     self.textLabel.textAlignment = UITextAlignmentCenter;
-    self.textLabel.textColor = self.textColor;
-    self.textLabel.shadowColor = [UIColor whiteColor];
+    self.textLabel.textColor =  [UIColor colorWithRed:0.173 green:0.243 blue:0.325 alpha:1]; ;
+    self.textLabel.shadowColor = self.shadowColor;
+    self.textLabel.font =  [UIFont fontWithName:@"HelveticaNeue" size:17];
     self.textLabel.shadowOffset = self.shadowOffset;
 }
 
@@ -97,7 +67,8 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 
     CGRect bounds = self.contentView.bounds;
     bounds.size.height -= TSQCalendarMonthHeaderCellMonthsHeight;
-    self.textLabel.frame = CGRectOffset(bounds, 0.0f, 5.0f);
+    self.textLabel.frame = CGRectOffset(bounds, 0.0f, TSQCalendarMonthHeaderCellMonthsHeight);
+    self.textLabel.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)layoutViewsForColumnAtIndex:(NSUInteger)index inRect:(CGRect)rect;
