@@ -199,11 +199,6 @@ static const NSInteger maxValueForRange = 14;
 {
     self.calendarView.selectionError = nil;
     
-    if ([self differenceInDaysBetweenStartDate:[NSDate new] andEndDate:selectedDate] < 0) {
-        self.calendarView.selectionError = TSQCalendarErrorAttemptToSelectDisabledDate;
-        return;
-    }
-    
     if (self.calendarView.selectionMode == TSQCalendarSelectionModeDay) {
         self.calendarView.selectedDate = ([self.calendarView.selectedDate isEqual:selectedDate]) ? nil : selectedDate;
     } else {
@@ -213,8 +208,6 @@ static const NSInteger maxValueForRange = 14;
         } else if (self.calendarView.selectedStartDate && ([selectedDate compare:self.calendarView.selectedStartDate] == NSOrderedDescending)) {
             if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] <= maxValueForRange) {
                 self.calendarView.selectedEndDate = selectedDate;
-            } else {
-                self.calendarView.selectionError = TSQCalendarErrorSelectionMaxRange;
             }
         } else if ([self.calendarView.selectedStartDate isEqual:selectedDate]) {
             self.calendarView.selectedStartDate = nil;
@@ -223,6 +216,10 @@ static const NSInteger maxValueForRange = 14;
                 self.calendarView.selectedStartDate = selectedDate;
             }
         }
+    }
+    
+    if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] > maxValueForRange) {
+        self.calendarView.selectionError = TSQCalendarErrorSelectionMaxRange;
     }
 }
 
