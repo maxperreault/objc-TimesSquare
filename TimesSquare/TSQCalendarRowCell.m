@@ -199,6 +199,10 @@ static const NSInteger maxValueForRange = 14;
 {
     self.calendarView.selectionError = nil;
     
+    if (self.calendarView.isScrolling) {
+        return;
+    }
+
     if (self.calendarView.selectionMode == TSQCalendarSelectionModeDay) {
         self.calendarView.selectedDate = ([self.calendarView.selectedDate isEqual:selectedDate]) ? nil : selectedDate;
     } else {
@@ -218,7 +222,7 @@ static const NSInteger maxValueForRange = 14;
         }
     }
     
-    if ([self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] > maxValueForRange) {
+    if (self.calendarView.selectedStartDate && selectedDate && [self differenceInDaysBetweenStartDate:self.calendarView.selectedStartDate andEndDate:selectedDate] > maxValueForRange) {
         self.calendarView.selectionError = TSQCalendarErrorSelectionMaxRange;
     }
 }
