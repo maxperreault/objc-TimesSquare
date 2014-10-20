@@ -358,6 +358,7 @@
 
 - (void)layoutSubviews;
 {
+    [super layoutSubviews];
     if (self.pinsHeaderToTop) {
         if (!self.headerView) {
             self.headerView = [self makeHeaderCellWithIdentifier:nil];
