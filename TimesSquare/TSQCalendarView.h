@@ -205,7 +205,7 @@ typedef NS_ENUM(NSInteger, TSQCalendarError){
  */
 - (void)resetSelectedDatesForCalendarView:(TSQCalendarView *)calendarView;
 
-- (void)calendarView:(TSQCalendarView *)calendarView didFailToSelectDateWithError:(TSQCalendarError *)error;
+- (void)calendarView:(TSQCalendarView *)calendarView didFailToSelectDateWithError:(TSQCalendarError)error;
 
 /** Tells the delegate that a start date was selected for a range of dates.
  
