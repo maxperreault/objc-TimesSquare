@@ -124,6 +124,12 @@
     _lastDate = [self.calendar dateByAddingComponents:offsetComponents toDate:firstOfMonth options:0];
 }
 
+- (BOOL)isScrolling
+{
+    return (self.tableView.isDragging || self.tableView.isDecelerating);
+    
+}
+
 - (void)scrollToDate:(NSDate *)date animated:(BOOL)animated;
 {
     [self scrollToDate:date animated:animated atScrollPosition:UITableViewScrollPositionTop];
@@ -283,6 +289,15 @@
     }
 }
 
+- (void)setSelectionError:(TSQCalendarError *)selectionError
+{
+    _selectionError = selectionError;
+    
+    if (selectionError && [self.delegate respondsToSelector:@selector(calendarView:didFailToSelectDateWithError:)]) {
+        [self.delegate calendarView:self didFailToSelectDateWithError:selectionError];
+    }
+}
+
 - (void)updateSelectedDates
 {
     for (NSDate *date in _selectedDates) {
@@ -343,6 +358,7 @@
 
 - (void)layoutSubviews;
 {
+    [super layoutSubviews];
     if (self.pinsHeaderToTop) {
         if (!self.headerView) {
             self.headerView = [self makeHeaderCellWithIdentifier:nil];
