@@ -65,6 +65,12 @@
  */
 @property (nonatomic, strong) UIFont *textFont;
 
+/** The text font but smaller
+
+This is used for all text the cell draws;.
+*/
+@property (nonatomic, strong) UIFont *smallTextFont;
+
 /** The text color when disabled.
  
  This is used for all text the cell draws if date disabled
