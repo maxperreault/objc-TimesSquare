@@ -53,6 +53,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     _selectionMode = TSQCalendarSelectionModeDay;
+    _tableView.panGestureRecognizer.delaysTouchesBegan = YES;
     [self addSubview:_tableView];    
 }
 
@@ -314,16 +315,28 @@
     return [self.calendar dateByAddingComponents:offset toDate:self.firstDate options:0];
 }
 
+- (NSDate *)firstOfMonthForRow:(NSInteger)row;
+{
+    NSDateComponents *offset = [NSDateComponents new];
+    offset.week = row;
+    NSDate *dateInMonth = [self.calendar dateByAddingComponents:offset toDate:self.firstDate options:0];
+    NSDate *firstInMonth = [self clampDate:dateInMonth toComponents:NSMonthCalendarUnit|NSYearCalendarUnit];
+    return firstInMonth;
+}
+
+//TODO
 - (TSQCalendarRowCell *)cellForRowAtDate:(NSDate *)date;
 {
     return (TSQCalendarRowCell *)[self.tableView cellForRowAtIndexPath:[self indexPathForRowAtDate:date]];
 }
 
+//TODO
 - (NSInteger)sectionForDate:(NSDate *)date;
 {
   return [self.calendar components:NSMonthCalendarUnit fromDate:self.firstDate toDate:date options:0].month;
 }
 
+//TODO
 - (NSIndexPath *)indexPathForRowAtDate:(NSDate *)date;
 {
     if (!date) {
@@ -388,18 +401,22 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
-    return 1 + [self.calendar components:NSMonthCalendarUnit fromDate:self.firstDate toDate:self.lastDate options:0].month;
+    //return 1 + [self.calendar components:NSMonthCalendarUnit fromDate:self.firstDate toDate:self.lastDate options:0].month;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    NSDate *firstOfMonth = [self firstOfMonthForSection:section];
-    NSRange rangeOfWeeks = [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:firstOfMonth];
-    return (self.pinsHeaderToTop ? 0 : 1) + rangeOfWeeks.length;
+    //NSDate *firstOfMonth = [self firstOfMonthForSection:section];
+    //NSRange rangeOfWeeks = [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:firstOfMonth];
+    //return (self.pinsHeaderToTop ? 0 : 1) + rangeOfWeeks.length;
+    
+    return 1 + [self.calendar components:NSWeekCalendarUnit fromDate:self.firstDate toDate:self.lastDate options:0].week;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    /**
     if (indexPath.row == 0 && !self.pinsHeaderToTop) {
         // month header
         static NSString *identifier = @"header";
@@ -418,12 +435,23 @@
         }
         return cell;
     }
+    **/
+    
+    static NSString *identifier = @"row";
+    TSQCalendarRowCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[[self rowCellClass] alloc] initWithCalendar:self.calendar reuseIdentifier:identifier];
+        cell.backgroundColor = self.backgroundColor;
+        cell.calendarView = self;
+    }
+    return cell;
 }
 
 #pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    /**
     NSDate *firstOfMonth = [self firstOfMonthForSection:indexPath.section];
     [(TSQCalendarCell *)cell setFirstOfMonth:firstOfMonth];
     if (indexPath.row > 0 || self.pinsHeaderToTop) {
@@ -432,6 +460,30 @@
         dateComponents.day = 1 - ordinalityOfFirstDay;
         dateComponents.week = indexPath.row - (self.pinsHeaderToTop ? 0 : 1);
         [(TSQCalendarRowCell *)cell setBeginningDate:[self.calendar dateByAddingComponents:dateComponents toDate:firstOfMonth options:0]];
+        
+        if (self.selectionMode == TSQCalendarSelectionModeDay) {
+            [(TSQCalendarRowCell *)cell selectColumnForDate:self.selectedDate];
+        } else {
+            for (NSDate *date in _selectedDates) {
+                [(TSQCalendarRowCell *)cell selectColumnForDate:date];
+            }
+        }
+        
+        BOOL isBottomRow = (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - (self.pinsHeaderToTop ? 0 : 1));
+        [(TSQCalendarRowCell *)cell setBottomRow:isBottomRow];
+    }
+    **/
+    
+    NSDate *firstOfMonth = [self firstOfMonthForRow:indexPath.row];
+    [(TSQCalendarCell *)cell setFirstOfMonth:firstOfMonth];
+    if (indexPath.row > 0 || self.pinsHeaderToTop) {
+        
+        
+        NSInteger ordinalityOfFirstDay = [self.calendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSWeekCalendarUnit forDate:self.firstDate];
+        NSDateComponents *dateComponents = [NSDateComponents new];
+        dateComponents.day = 1 - ordinalityOfFirstDay;
+        dateComponents.week = indexPath.row - (self.pinsHeaderToTop ? 0 : 1);
+        [(TSQCalendarRowCell *)cell setBeginningDate:[self.calendar dateByAddingComponents:dateComponents toDate:self.firstDate options:0]];
         
         if (self.selectionMode == TSQCalendarSelectionModeDay) {
             [(TSQCalendarRowCell *)cell selectColumnForDate:self.selectedDate];

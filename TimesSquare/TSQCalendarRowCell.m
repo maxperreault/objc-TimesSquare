@@ -9,6 +9,7 @@
 
 #import "TSQCalendarRowCell.h"
 #import "TSQCalendarView.h"
+#import "UIButton+Subtitle.h"
 
 
 @interface TSQCalendarRowCell ()
@@ -20,13 +21,14 @@
 @property (nonatomic, assign) NSInteger indexOfSelectedButton;
 
 @property (nonatomic, strong) NSDateFormatter *dayFormatter;
+@property (nonatomic, strong) NSDateFormatter *monthFormatter;
+
 @property (nonatomic, strong) NSDateFormatter *accessibilityFormatter;
 
 @property (nonatomic, strong) NSDateComponents *todayDateComponents;
 @property (nonatomic) NSInteger monthOfBeginningDate;
 
 @property (nonatomic, strong, readwrite) NSArray *dayButtons;
-@property (nonatomic, strong, readwrite) NSArray *notThisMonthButtons;
 
 @end
 
@@ -106,13 +108,18 @@ static const NSInteger maxValueForRange = 14;
     for (NSUInteger index = 0; index < self.daysInWeek; index++) {
         UIButton *button = [[UIButton alloc] initWithFrame:self.contentView.bounds];
         [button addTarget:self action:@selector(dateButtonPressed:) forControlEvents:UIControlEventTouchDown];
+        [button setSubTitle:[[UILabel alloc] init]];
+        [button setMainTitle:[[UILabel alloc] init]];
+        [button addSubview:button.subTitle];
+        [button addSubview:button.mainTitle];
         [dayButtons addObject:button];
         [self.contentView addSubview:button];
-        [self configureButton:button];        
+        [self configureButton:button];
     }
     self.dayButtons = dayButtons;
 }
 
+/**
 - (void)createNotThisMonthButtons;
 {
     NSMutableArray *notThisMonthButtons = [NSMutableArray arrayWithCapacity:self.daysInWeek];
@@ -128,6 +135,7 @@ static const NSInteger maxValueForRange = 14;
     }
     self.notThisMonthButtons = notThisMonthButtons;
 }
+ **/
 
 - (void)setBeginningDate:(NSDate *)date;
 {
@@ -135,7 +143,7 @@ static const NSInteger maxValueForRange = 14;
     
     if (!self.dayButtons) {
         [self createDayButtons];
-        [self createNotThisMonthButtons];
+        //[self createNotThisMonthButtons];
     }
 
     NSDateComponents *offset = [NSDateComponents new];
@@ -145,23 +153,33 @@ static const NSInteger maxValueForRange = 14;
     
     for (NSUInteger index = 0; index < self.daysInWeek; index++) {
         NSString *title = [self.dayFormatter stringFromDate:date];
-        NSString *accessibilityLabel = [self.accessibilityFormatter stringFromDate:date];
-        [self.dayButtons[index] setTitle:title forState:UIControlStateNormal];
-        [self.dayButtons[index] setAccessibilityLabel:accessibilityLabel];
-        [self.notThisMonthButtons[index] setTitle:title forState:UIControlStateNormal];
-        [self.notThisMonthButtons[index] setAccessibilityLabel:accessibilityLabel];
+        NSString *subTitle = [self.monthFormatter stringFromDate:date];
         
-        NSDateComponents *thisDateComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
+        UILabel *l1=[self.dayButtons[index] subTitle];
+        UILabel *l2=[self.dayButtons[index] mainTitle];
+        
+        UIFont *f1 = [UIFont systemFontOfSize:8.0f];
+        UIFont *f2 = [UIFont systemFontOfSize:14.0f];
+        
+        l1.textAlignment =  NSTextAlignmentCenter;
+        l2.textAlignment = NSTextAlignmentCenter;
+        l1.font = f1;
+        l2.font = f2;
+         
+        l1.text = subTitle;
+        l2.text = title;
+        
 
-        [self.notThisMonthButtons[index] setHidden:YES];
+        //[self.notThisMonthButtons[index] setHidden:YES];
         [self.dayButtons[index] setHidden:NO];
         
+        NSDateComponents *thisDateComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
         NSInteger thisDayMonth = thisDateComponents.month;
         if (self.monthOfBeginningDate != thisDayMonth) {
             if (self.showsNotThisMonth) {
-                [self.notThisMonthButtons[index] setHidden:NO];
+                //[self.notThisMonthButtons[index] setHidden:NO];
             } else {
-                [self.dayButtons[index] setHidden:YES];
+                //[self.dayButtons[index] setHidden:YES];
             }
         } else {
             if ([self.todayDateComponents isEqual:thisDateComponents]) {
@@ -178,6 +196,8 @@ static const NSInteger maxValueForRange = 14;
         date = [self.calendar dateByAddingComponents:offset toDate:date options:0];
         buttonStates[index] = 0;
     }
+    
+    [self setNeedsLayout];
 }
 
 - (void)setBottomRow:(BOOL)bottomRow;
@@ -256,10 +276,32 @@ static const NSInteger maxValueForRange = 14;
 - (void)layoutViewsForColumnAtIndex:(NSUInteger)index inRect:(CGRect)rect;
 {
     UIButton *dayButton = self.dayButtons[index];
-    UIButton *notThisMonthButton = self.notThisMonthButtons[index];
+    //UIButton *notThisMonthButton = self.notThisMonthButtons[index];
     
     dayButton.frame = rect;
-    notThisMonthButton.frame = rect;
+    //notThisMonthButton.frame = rect;
+    
+    
+    NSString *fakeTitle = @"15";
+    NSString *fakeSubTitle = @"WWW";
+    
+    UILabel *l1=[dayButton subTitle];
+    UILabel *l2=[dayButton mainTitle];
+    
+    UIFont *f1 = [UIFont systemFontOfSize:8.0f];
+    UIFont *f2 = [UIFont systemFontOfSize:14.0f];
+    
+    CGRect label1Frame;
+    CGRect label2Frame;
+    CGRectDivide(dayButton.bounds, &label1Frame, &label2Frame, [fakeSubTitle sizeWithFont:f1].height, CGRectMinYEdge);
+    label2Frame.size.height = [fakeTitle sizeWithFont:f2].height;
+    
+    l1.frame = label1Frame;
+    l2.frame = label2Frame;
+
+    
+    
+    
     
     if (buttonStates[index] == 1) {
         [self configureSelectedButton:dayButton];
@@ -315,9 +357,19 @@ static const NSInteger maxValueForRange = 14;
     if (!_dayFormatter) {
         _dayFormatter = [NSDateFormatter new];
         _dayFormatter.calendar = self.calendar;
-        _dayFormatter.dateFormat = @"d";
+        _dayFormatter.dateFormat = @"dd";
     }
     return _dayFormatter;
+}
+
+- (NSDateFormatter *)monthFormatter;
+{
+    if (!_monthFormatter) {
+        _monthFormatter = [NSDateFormatter new];
+        _monthFormatter.calendar = self.calendar;
+        _monthFormatter.dateFormat = @"MMM";
+    }
+    return _monthFormatter;
 }
 
 - (NSDateFormatter *)accessibilityFormatter;

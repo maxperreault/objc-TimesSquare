@@ -18,6 +18,9 @@
 		AC0A147817314AEE0080B096 /* TSQCalendarRowCell.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A806808A167010030071C71E /* TSQCalendarRowCell.h */; };
 		AC0A147917314AEE0080B096 /* TSQCalendarView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A806808C167010030071C71E /* TSQCalendarView.h */; };
 		AC0A147A173164B30080B096 /* TimesSquare.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A806806316700FD70071C71E /* TimesSquare.h */; };
+		CF9F529E19FF7E8F007CB097 /* UIButton+Subtitle.h in Headers */ = {isa = PBXBuildFile; fileRef = CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */; };
+		CF9F529F19FF7E8F007CB097 /* UIButton+Subtitle.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9F529D19FF7E8F007CB097 /* UIButton+Subtitle.m */; };
+		CF9F52A019FF8886007CB097 /* UIButton+Subtitle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +30,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				CF9F52A019FF8886007CB097 /* UIButton+Subtitle.h in CopyFiles */,
 				AC0A147A173164B30080B096 /* TimesSquare.h in CopyFiles */,
 				AC0A147617314AEE0080B096 /* TSQCalendarCell.h in CopyFiles */,
 				AC0A147717314AEE0080B096 /* TSQCalendarMonthHeaderCell.h in CopyFiles */,
@@ -53,6 +57,8 @@
 		A806808C167010030071C71E /* TSQCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSQCalendarView.h; sourceTree = "<group>"; };
 		A806808D167010030071C71E /* TSQCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSQCalendarView.m; sourceTree = "<group>"; };
 		A806809E167012980071C71E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Subtitle.h"; sourceTree = "<group>"; };
+		CF9F529D19FF7E8F007CB097 /* UIButton+Subtitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Subtitle.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,8 @@
 		A806806016700FD70071C71E /* TimesSquare */ = {
 			isa = PBXGroup;
 			children = (
+				CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */,
+				CF9F529D19FF7E8F007CB097 /* UIButton+Subtitle.m */,
 				A806806316700FD70071C71E /* TimesSquare.h */,
 				A8068086167010030071C71E /* TSQCalendarCell.h */,
 				A8068087167010030071C71E /* TSQCalendarCell.m */,
@@ -128,6 +136,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF9F529E19FF7E8F007CB097 /* UIButton+Subtitle.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,7 +184,7 @@
 		A806805216700FD70071C71E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Square;
 			};
 			buildConfigurationList = A806805516700FD70071C71E /* Build configuration list for PBXProject "TimesSquare" */;
@@ -205,6 +214,7 @@
 				A8068090167010030071C71E /* TSQCalendarMonthHeaderCell.m in Sources */,
 				A8068092167010030071C71E /* TSQCalendarRowCell.m in Sources */,
 				A8068094167010030071C71E /* TSQCalendarView.m in Sources */,
+				CF9F529F19FF7E8F007CB097 /* UIButton+Subtitle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +244,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -270,7 +281,10 @@
 				DSTROOT = /tmp/TimesSquare.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TimesSquare/TimesSquare-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -283,7 +297,10 @@
 				DSTROOT = /tmp/TimesSquare.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TimesSquare/TimesSquare-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -292,7 +309,6 @@
 		A81E05F91682A0E000E79A2B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -310,7 +326,6 @@
 		A81E05FA1682A0E000E79A2B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
