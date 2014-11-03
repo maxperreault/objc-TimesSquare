@@ -143,24 +143,6 @@ static const NSInteger maxValueForRange = 14;
     self.dayButtons = dayButtons;
 }
 
-/**
-- (void)createNotThisMonthButtons;
-{
-    NSMutableArray *notThisMonthButtons = [NSMutableArray arrayWithCapacity:self.daysInWeek];
-    for (NSUInteger index = 0; index < self.daysInWeek; index++) {
-        UIButton *button = [[UIButton alloc] initWithFrame:self.contentView.bounds];
-        [notThisMonthButtons addObject:button];
-        [self.contentView addSubview:button];
-        [self configureButton:button];
-
-        button.enabled = NO;
-        UIColor *backgroundPattern = [UIColor colorWithPatternImage:[self notThisMonthBackgroundImage]];
-        button.backgroundColor = backgroundPattern;
-    }
-    self.notThisMonthButtons = notThisMonthButtons;
-}
- **/
-
 - (void)setBeginningDate:(NSDate *)date;
 {
     _beginningDate = date;
@@ -198,24 +180,16 @@ static const NSInteger maxValueForRange = 14;
         [self.dayButtons[index] setHidden:NO];
         
         NSDateComponents *thisDateComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:date];
-        NSInteger thisDayMonth = thisDateComponents.month;
-        if (self.monthOfBeginningDate != thisDayMonth) {
-            if (self.showsNotThisMonth) {
-                //[self.notThisMonthButtons[index] setHidden:NO];
-            } else {
-                //[self.dayButtons[index] setHidden:YES];
-            }
-        } else {
+
             if ([self.todayDateComponents isEqual:thisDateComponents]) {
                 self.indexOfTodayButton = index;
             }
             UIButton *button = self.dayButtons[index];
             button.enabled = ![self.calendarView.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)] || [self.calendarView.delegate calendarView:self.calendarView shouldSelectDate:date];
             
-            if (self.disablesDatesEarlierThanToday && (self.todayDateComponents.year == thisDateComponents.year && self.todayDateComponents.month == thisDateComponents.month && thisDateComponents.day < self.todayDateComponents.day)) {
+            if (self.disablesDatesEarlierThanToday && ((self.todayDateComponents.year == thisDateComponents.year && self.todayDateComponents.month == thisDateComponents.month && thisDateComponents.day < self.todayDateComponents.day)|| (self.todayDateComponents.year == thisDateComponents.year && thisDateComponents.month < self.todayDateComponents.month))) {
                 button.enabled = NO;
             }
-        }
 
         date = [self.calendar dateByAddingComponents:offset toDate:date options:0];
         buttonStates[index] = 0;
@@ -238,6 +212,7 @@ static const NSInteger maxValueForRange = 14;
     [self setNeedsLayout];
 }
 
+//TODO
 - (void)selectDate:(NSDate *)selectedDate
 {
     self.calendarView.selectionError = nil;
@@ -430,16 +405,18 @@ static const NSInteger maxValueForRange = 14;
 
 - (NSInteger *)indexOfColumnForDate:(NSDate *)date;
 {
+    //TODO
     NSInteger indexOfButtonForDate = -1;
     if (date) {
-        NSInteger thisDayMonth = [self.calendar components:NSMonthCalendarUnit fromDate:date].month;
-        if (self.monthOfBeginningDate == thisDayMonth) {
+       // NSInteger thisDayMonth = [self.calendar components:NSMonthCalendarUnit fromDate:date].month;
+       // if (self.monthOfBeginningDate == thisDayMonth) {
             indexOfButtonForDate = [self.calendar components:NSDayCalendarUnit fromDate:self.beginningDate toDate:date options:0].day;
             if (indexOfButtonForDate >= (NSInteger)self.daysInWeek) {
                 indexOfButtonForDate = -1;
             }
-        }
+       // }
     }
+    NSLog(@"returning this index %ld", indexOfButtonForDate);
     return indexOfButtonForDate;
 }
 
