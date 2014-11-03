@@ -54,6 +54,7 @@
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     _selectionMode = TSQCalendarSelectionModeDay;
     _tableView.panGestureRecognizer.delaysTouchesBegan = YES;
+    
     [self addSubview:_tableView];    
 }
 
@@ -335,9 +336,16 @@
 
     NSInteger firstWeek = [self.calendar components:NSWeekOfYearCalendarUnit fromDate:self.firstDate].weekOfYear;
     NSInteger targetWeek = [self.calendar components:NSWeekOfYearCalendarUnit fromDate:date].weekOfYear;
+    
+    NSInteger firstYear = [self.calendar components:NSYearCalendarUnit fromDate:self.firstDate].year;
+    NSInteger targetYear = [self.calendar components:NSYearCalendarUnit fromDate:date].year;
+    
     if (targetWeek < firstWeek) {
         targetWeek += [self.calendar maximumRangeOfUnit:NSWeekOfYearCalendarUnit].length -1;
+    } else if (targetYear > firstYear) {
+        targetWeek += 52;
     }
+    
     return [NSIndexPath indexPathForRow:targetWeek - firstWeek inSection:0];
 }
 
@@ -376,6 +384,8 @@
         CGRectDivide(bounds, &headerRect, &tableRect, [[self headerCellClass] cellHeight], CGRectMinYEdge);
         self.headerView.frame = headerRect;
         self.tableView.frame = tableRect;
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     } else {
         if (self.headerView) {
             [self.headerView removeFromSuperview];

@@ -405,7 +405,6 @@ static const NSInteger maxValueForRange = 14;
 
 - (NSInteger *)indexOfColumnForDate:(NSDate *)date;
 {
-    //TODO
     NSInteger indexOfButtonForDate = -1;
     if (date) {
        // NSInteger thisDayMonth = [self.calendar components:NSMonthCalendarUnit fromDate:date].month;
@@ -416,7 +415,6 @@ static const NSInteger maxValueForRange = 14;
             }
        // }
     }
-    NSLog(@"returning this index %ld", indexOfButtonForDate);
     return indexOfButtonForDate;
 }
 
