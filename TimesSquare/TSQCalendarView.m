@@ -55,7 +55,7 @@
     _selectionMode = TSQCalendarSelectionModeDay;
     _tableView.panGestureRecognizer.delaysTouchesBegan = YES;
     
-    [self addSubview:_tableView];    
+    [self addSubview:_tableView];
 }
 
 - (void)dealloc;
@@ -426,7 +426,6 @@
     NSDate *firstOfMonth = [self firstOfMonthForRow:indexPath.row];
     [(TSQCalendarCell *)cell setFirstOfMonth:firstOfMonth];
     if (indexPath.row > 0 || self.pinsHeaderToTop) {
-        
         
         NSInteger ordinalityOfFirstDay = [self.calendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSWeekCalendarUnit forDate:self.firstDate];
         NSDateComponents *dateComponents = [NSDateComponents new];

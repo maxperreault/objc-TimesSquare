@@ -98,14 +98,14 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
     CGRect bounds = self.contentView.bounds;
     bounds.size.height -= TSQCalendarMonthHeaderCellMonthsHeight;
     self.textLabel.frame = CGRectOffset(bounds, 0.0f, 0.0f);
-    self.textLabel.backgroundColor = [UIColor whiteColor];
+    self.textLabel.backgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutViewsForColumnAtIndex:(NSUInteger)index inRect:(CGRect)rect;
 {
     UILabel *label = self.headerLabels[index];
     CGRect labelFrame = rect;
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
     labelFrame.size.height = TSQCalendarMonthHeaderCellMonthsHeight;
     labelFrame.origin.y = self.bounds.size.height - TSQCalendarMonthHeaderCellMonthsHeight;
     label.frame = labelFrame;

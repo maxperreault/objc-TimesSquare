@@ -10,11 +10,14 @@
 #import "TSQCalendarRowCell.h"
 #import "TSQCalendarView.h"
 #import "UIButton+Subtitle.h"
+#import "UIButton+OutsetLayers.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface TSQCalendarRowCell ()
 {
     NSUInteger buttonStates[7];
+    NSUInteger buttonEveness[7];
 }
 
 @property (nonatomic, assign) NSInteger indexOfTodayButton;
@@ -35,6 +38,12 @@
 static const NSInteger maxValueForRange = 14;
 
 @implementation TSQCalendarRowCell
+
++ (CGFloat)cellHeight;
+{
+    CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
+    return 46.0f + twoPixel;
+}
 
 - (id)initWithCalendar:(NSCalendar *)calendar reuseIdentifier:(NSString *)reuseIdentifier;
 {
@@ -64,6 +73,57 @@ static const NSInteger maxValueForRange = 14;
     [button setBackgroundImage:nil forState:UIControlStateNormal];
 }
 
+- (void)configureEvenButton:(UIButton *)button;
+{
+    if(button.outsetLayers){
+        for(int i=0; i<button.outsetLayers.count; i++){
+            CALayer *layer = (CALayer*)button.outsetLayers[i];
+            [layer removeFromSuperlayer];
+        }
+    }
+    button.outsetLayers = [NSMutableArray arrayWithArray:@[]];
+    
+    CALayer *mainLayer = button.layer;
+    [mainLayer setBackgroundColor:[UIColor clearColor].CGColor];
+    
+    CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
+    CALayer *layer = [CALayer layer];
+    [layer setBackgroundColor:[UIColor clearColor].CGColor];
+    [layer setBorderWidth:twoPixel/2.0f];
+    [layer setBorderColor:[UIColor colorWithWhite:0.5f alpha:0.5f].CGColor];
+    layer.frame = CGRectInset(mainLayer.bounds, -twoPixel/2.0f, -twoPixel/2.0f);
+    
+    //[mainLayer addSublayer:layer];
+    [mainLayer insertSublayer:layer atIndex:0];
+    [button.outsetLayers addObject:layer];
+    
+}
+
+- (void)configureOddButton:(UIButton *)button;
+{
+    if(button.outsetLayers){
+        for(int i=0; i<button.outsetLayers.count; i++){
+            CALayer *layer = (CALayer*)button.outsetLayers[i];
+            [layer removeFromSuperlayer];
+        }
+    }
+    button.outsetLayers = [NSMutableArray arrayWithArray:@[]];
+    
+    CALayer *mainLayer = button.layer;
+    [mainLayer setBackgroundColor:[UIColor colorWithWhite:0.5f alpha:0.5f].CGColor];
+    
+    CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
+    CALayer *layer = [CALayer layer];
+    [layer setBackgroundColor:[UIColor clearColor].CGColor];
+    [layer setBorderWidth:twoPixel/2.0f];
+    [layer setBorderColor:[UIColor clearColor].CGColor];
+    layer.frame = CGRectInset(mainLayer.bounds, -twoPixel/2.0f, -twoPixel/2.0f);
+    
+    //[mainLayer addSublayer:layer];
+    [mainLayer insertSublayer:layer atIndex:0];
+    [button.outsetLayers addObject:layer];
+}
+
 - (void)configureSelectedButton:(UIButton *)button;
 {
     button.subTitle.textColor = [UIColor whiteColor];
@@ -86,6 +146,17 @@ static const NSInteger maxValueForRange = 14;
     button.mainTitle.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.75f];
     button.subTitle.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
     button.mainTitle.shadowOffset = CGSizeMake(0.0f, -1.0f / [UIScreen mainScreen].scale);
+    
+    CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
+    CALayer *layer = button.layer;
+    CALayer *greenHighlightLayer = [CALayer layer];
+    [greenHighlightLayer setBorderWidth:twoPixel];
+    [greenHighlightLayer setBorderColor:[UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:1.0f].CGColor];
+    [greenHighlightLayer setBackgroundColor:[UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:0.5f].CGColor];
+    greenHighlightLayer.frame = CGRectInset(layer.bounds, -twoPixel/2.0f, -twoPixel/2.0f);
+    //[layer addSublayer:greenHighlightLayer];
+    [layer insertSublayer:greenHighlightLayer atIndex:0];
+    [button.outsetLayers addObject:greenHighlightLayer];
 }
 
 - (void)configureTodayButton:(UIButton *)button;
@@ -193,6 +264,7 @@ static const NSInteger maxValueForRange = 14;
 
         date = [self.calendar dateByAddingComponents:offset toDate:date options:0];
         buttonStates[index] = 0;
+        buttonEveness[index] = thisDateComponents.month % 2;
     }
     
     [self setNeedsLayout];
@@ -277,6 +349,9 @@ static const NSInteger maxValueForRange = 14;
     UIButton *dayButton = self.dayButtons[index];
     //UIButton *notThisMonthButton = self.notThisMonthButtons[index];
     
+    CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
+    rect = CGRectInset(rect, 0, twoPixel/2.0f);
+    
     dayButton.frame = rect;
     //notThisMonthButton.frame = rect;
     
@@ -292,12 +367,23 @@ static const NSInteger maxValueForRange = 14;
     
     CGRect label1Frame;
     CGRect label2Frame;
-    CGRectDivide(dayButton.bounds, &label1Frame, &label2Frame, [fakeSubTitle sizeWithFont:f1].height, CGRectMinYEdge);
-    label2Frame.size.height = [fakeTitle sizeWithFont:f2].height;
+    
+    CGFloat titleHeight = [fakeTitle sizeWithFont:f2].height;
+    CGFloat subTitleHeight = [fakeSubTitle sizeWithFont:f1].height;
+    CGRect smallerBounds = CGRectInset(dayButton.bounds, 0, (dayButton.bounds.size.height-titleHeight-subTitleHeight)/2.0);
+    
+    
+    CGRectDivide(smallerBounds, &label1Frame, &label2Frame, subTitleHeight, CGRectMinYEdge);
+    label2Frame.size.height = titleHeight;
     
     l1.frame = label1Frame;
     l2.frame = label2Frame;
 
+    if(buttonEveness[index] == 0){
+        [self configureEvenButton:dayButton];
+    } else if (buttonEveness[index] == 1){
+        [self configureOddButton:dayButton];
+    }
     
     if (buttonStates[index] == 1) {
         [self configureSelectedButton:dayButton];

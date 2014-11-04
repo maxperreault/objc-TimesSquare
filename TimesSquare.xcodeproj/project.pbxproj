@@ -18,6 +18,8 @@
 		AC0A147817314AEE0080B096 /* TSQCalendarRowCell.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A806808A167010030071C71E /* TSQCalendarRowCell.h */; };
 		AC0A147917314AEE0080B096 /* TSQCalendarView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A806808C167010030071C71E /* TSQCalendarView.h */; };
 		AC0A147A173164B30080B096 /* TimesSquare.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A806806316700FD70071C71E /* TimesSquare.h */; };
+		CF3AAB991A084ACC0096F1E1 /* UIButton+OutsetLayers.h in Headers */ = {isa = PBXBuildFile; fileRef = CF3AAB971A084ACC0096F1E1 /* UIButton+OutsetLayers.h */; };
+		CF3AAB9A1A084ACC0096F1E1 /* UIButton+OutsetLayers.m in Sources */ = {isa = PBXBuildFile; fileRef = CF3AAB981A084ACC0096F1E1 /* UIButton+OutsetLayers.m */; };
 		CF9F529E19FF7E8F007CB097 /* UIButton+Subtitle.h in Headers */ = {isa = PBXBuildFile; fileRef = CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */; };
 		CF9F529F19FF7E8F007CB097 /* UIButton+Subtitle.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9F529D19FF7E8F007CB097 /* UIButton+Subtitle.m */; };
 		CF9F52A019FF8886007CB097 /* UIButton+Subtitle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */; };
@@ -57,6 +59,8 @@
 		A806808C167010030071C71E /* TSQCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSQCalendarView.h; sourceTree = "<group>"; };
 		A806808D167010030071C71E /* TSQCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSQCalendarView.m; sourceTree = "<group>"; };
 		A806809E167012980071C71E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CF3AAB971A084ACC0096F1E1 /* UIButton+OutsetLayers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+OutsetLayers.h"; sourceTree = "<group>"; };
+		CF3AAB981A084ACC0096F1E1 /* UIButton+OutsetLayers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+OutsetLayers.m"; sourceTree = "<group>"; };
 		CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Subtitle.h"; sourceTree = "<group>"; };
 		CF9F529D19FF7E8F007CB097 /* UIButton+Subtitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Subtitle.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -105,6 +109,8 @@
 		A806806016700FD70071C71E /* TimesSquare */ = {
 			isa = PBXGroup;
 			children = (
+				CF3AAB971A084ACC0096F1E1 /* UIButton+OutsetLayers.h */,
+				CF3AAB981A084ACC0096F1E1 /* UIButton+OutsetLayers.m */,
 				CF9F529C19FF7E8F007CB097 /* UIButton+Subtitle.h */,
 				CF9F529D19FF7E8F007CB097 /* UIButton+Subtitle.m */,
 				A806806316700FD70071C71E /* TimesSquare.h */,
@@ -136,6 +142,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF3AAB991A084ACC0096F1E1 /* UIButton+OutsetLayers.h in Headers */,
 				CF9F529E19FF7E8F007CB097 /* UIButton+Subtitle.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,6 +222,7 @@
 				A8068092167010030071C71E /* TSQCalendarRowCell.m in Sources */,
 				A8068094167010030071C71E /* TSQCalendarView.m in Sources */,
 				CF9F529F19FF7E8F007CB097 /* UIButton+Subtitle.m in Sources */,
+				CF3AAB9A1A084ACC0096F1E1 /* UIButton+OutsetLayers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

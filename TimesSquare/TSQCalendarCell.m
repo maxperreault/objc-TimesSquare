@@ -33,6 +33,7 @@
     self.backgroundColor = [UIColor colorWithRed:0.84f green:0.85f blue:0.86f alpha:1.0f];
     
     CGFloat onePixel = 1.0f / [UIScreen mainScreen].scale;
+    CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
     
     static CGSize shadowOffset;
     static dispatch_once_t onceToken;
@@ -40,7 +41,7 @@
         shadowOffset = CGSizeMake(0.0f, onePixel);
     });
     self.shadowOffset = shadowOffset;
-    self.columnSpacing = onePixel;
+    self.columnSpacing = twoPixel;
     self.textColor = [UIColor colorWithRed:0.47f green:0.5f blue:0.53f alpha:1.0f];
     self.textColorDisabled = [self.textColor colorWithAlphaComponent:0.5f];
     self.textColorShadow = [UIColor whiteColor];
