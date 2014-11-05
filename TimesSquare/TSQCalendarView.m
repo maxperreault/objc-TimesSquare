@@ -197,6 +197,8 @@
     if ([self.delegate respondsToSelector:@selector(resetSelectedDatesForCalendarView:)]) {
         [self.delegate resetSelectedDatesForCalendarView:self];
     }
+    
+    [self.headerView setSelectedDates:@[]];
 }
 
 - (void)resetSelectedDateRange
@@ -310,6 +312,7 @@
     for (NSDate *date in _selectedDates) {
         [[self cellForRowAtDate:date] selectColumnForDate:date];
     }
+    [self.headerView setSelectedDates:_selectedDates];
 }
 
 #pragma mark Calendar calculations
@@ -472,8 +475,8 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 {
     if (self.pinsHeaderToTop && self.tableView.visibleCells.count > 0) {
-        TSQCalendarCell *cell = self.tableView.visibleCells[0];
-        self.headerView.firstOfMonth = cell.firstOfMonth;
+        //TSQCalendarCell *cell = self.tableView.visibleCells[0];
+        //self.headerView.firstOfMonth = cell.firstOfMonth;
     }
 }
 

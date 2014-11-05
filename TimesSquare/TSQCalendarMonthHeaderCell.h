@@ -30,4 +30,6 @@
  */
 - (void)createHeaderLabels;
 
+- (void)setSelectedDates:(NSArray*)dates;
+
 @end

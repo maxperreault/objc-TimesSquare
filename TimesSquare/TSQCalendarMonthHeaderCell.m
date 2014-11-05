@@ -114,8 +114,8 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 - (void)setFirstOfMonth:(NSDate *)firstOfMonth;
 {
     [super setFirstOfMonth:firstOfMonth];
-    self.textLabel.text = [self.monthDateFormatter stringFromDate:firstOfMonth];
-    self.accessibilityLabel = self.textLabel.text;
+    //self.textLabel.text = [self.monthDateFormatter stringFromDate:firstOfMonth];
+   // self.accessibilityLabel = self.textLabel.text;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
@@ -123,6 +123,18 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
     [super setBackgroundColor:backgroundColor];
     for (UILabel *label in self.headerLabels) {
         label.backgroundColor = backgroundColor;
+    }
+}
+
+- (void)setSelectedDates:(NSArray*)dates{
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.calendar = self.calendar;
+    NSString *dateComponents = @"ddyyyyLLLL";
+    formatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:[NSLocale currentLocale]];
+    if(dates.count == 1){
+        self.textLabel.text = [formatter stringFromDate:dates[0]];
+    } else if (dates==nil || dates.count==0){
+        self.textLabel.text = @"";
     }
 }
 
