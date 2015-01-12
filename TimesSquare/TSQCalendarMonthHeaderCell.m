@@ -10,7 +10,7 @@
 #import "TSQCalendarMonthHeaderCell.h"
 
 
-static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
+static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 49.f;
 
 
 @interface TSQCalendarMonthHeaderCell ()
@@ -37,7 +37,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
 
 + (CGFloat)cellHeight;
 {
-    return 65.0f;
+    return 95.0f;
 }
 
 - (NSDateFormatter *)monthDateFormatter;
@@ -72,7 +72,8 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
         UILabel *label = [[UILabel alloc] initWithFrame:self.frame];
         label.textAlignment = UITextAlignmentCenter;
         label.text = [dayFormatter stringFromDate:referenceDate];
-        label.font = [UIFont boldSystemFontOfSize:12.f];
+        //TODO need setting for this. and font should be light
+        label.font = [UIFont fontWithName:@"roboto-regular" size:15.0f];
         label.backgroundColor = self.backgroundColor;
         label.textColor = self.textColor;
         label.shadowColor = self.shadowColor;
@@ -86,9 +87,11 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
     
     self.headerLabels = headerLabels;
     self.textLabel.textAlignment = UITextAlignmentCenter;
-    self.textLabel.textColor = self.textColor;
+    //TODO set a setting for this
+    self.textLabel.textColor = [UIColor colorWithWhite:1.0f alpha:0.25f]; //self.textColor;
     self.textLabel.shadowColor = self.shadowColor;
     self.textLabel.shadowOffset = self.shadowOffset;
+    self.textLabel.text = @"Select a date for your Event";
 }
 
 - (void)layoutSubviews;
@@ -134,7 +137,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
     if(dates.count == 1){
         self.textLabel.text = [formatter stringFromDate:dates[0]];
     } else if (dates==nil || dates.count==0){
-        self.textLabel.text = @"";
+        self.textLabel.text = @"Select a date for your Event";
     }
 }
 
