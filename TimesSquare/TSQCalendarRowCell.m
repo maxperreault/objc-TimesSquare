@@ -42,7 +42,7 @@ static const NSInteger maxValueForRange = 14;
 + (CGFloat)cellHeight;
 {
     CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
-    return 46.0f + twoPixel;
+    return 40.0f + twoPixel;
 }
 
 - (id)initWithCalendar:(NSCalendar *)calendar reuseIdentifier:(NSString *)reuseIdentifier;
@@ -90,7 +90,7 @@ static const NSInteger maxValueForRange = 14;
     CALayer *layer = [CALayer layer];
     [layer setBackgroundColor:[UIColor clearColor].CGColor];
     [layer setBorderWidth:twoPixel/2.0f];
-    [layer setBorderColor:[UIColor colorWithWhite:0.5f alpha:0.5f].CGColor];
+    [layer setBorderColor:[UIColor colorWithWhite:1.0f alpha:0.06f].CGColor];
     layer.frame = CGRectInset(mainLayer.bounds, -twoPixel/2.0f, -twoPixel/2.0f);
     
     //[mainLayer addSublayer:layer];
@@ -110,7 +110,7 @@ static const NSInteger maxValueForRange = 14;
     button.outsetLayers = [NSMutableArray arrayWithArray:@[]];
     
     CALayer *mainLayer = button.layer;
-    [mainLayer setBackgroundColor:[UIColor colorWithWhite:0.5f alpha:0.5f].CGColor];
+    [mainLayer setBackgroundColor:[UIColor colorWithWhite:1.0f alpha:0.05f].CGColor];
     
     CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
     CALayer *layer = [CALayer layer];
@@ -151,8 +151,8 @@ static const NSInteger maxValueForRange = 14;
     CALayer *layer = button.layer;
     CALayer *greenHighlightLayer = [CALayer layer];
     [greenHighlightLayer setBorderWidth:twoPixel];
-    [greenHighlightLayer setBorderColor:[UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:1.0f].CGColor];
-    [greenHighlightLayer setBackgroundColor:[UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:0.5f].CGColor];
+    [greenHighlightLayer setBorderColor:[UIColor colorWithRed:203.0f/255.0f green:226.0f/255.0f blue:74.0f/255.0f alpha:1.0f].CGColor];
+    [greenHighlightLayer setBackgroundColor:[UIColor colorWithRed:203.0f/255.0f green:226.0f/255.0f blue:74.0f/255.0f alpha:0.5f].CGColor];
     greenHighlightLayer.frame = CGRectInset(layer.bounds, -twoPixel/2.0f, -twoPixel/2.0f);
     //[layer addSublayer:greenHighlightLayer];
     [layer insertSublayer:greenHighlightLayer atIndex:0];
@@ -230,7 +230,7 @@ static const NSInteger maxValueForRange = 14;
     
     for (NSUInteger index = 0; index < self.daysInWeek; index++) {
         NSString *title = [self.dayFormatter stringFromDate:date];
-        NSString *subTitle = [self.monthFormatter stringFromDate:date];
+        NSString *subTitle = [[self.monthFormatter stringFromDate:date] uppercaseString];
         
         UILabel *l1=[self.dayButtons[index] subTitle];
         UILabel *l2=[self.dayButtons[index] mainTitle];
@@ -258,7 +258,7 @@ static const NSInteger maxValueForRange = 14;
             UIButton *button = self.dayButtons[index];
             button.enabled = ![self.calendarView.delegate respondsToSelector:@selector(calendarView:shouldSelectDate:)] || [self.calendarView.delegate calendarView:self.calendarView shouldSelectDate:date];
             
-            if (self.disablesDatesEarlierThanToday && ((self.todayDateComponents.year == thisDateComponents.year && self.todayDateComponents.month == thisDateComponents.month && thisDateComponents.day < self.todayDateComponents.day)|| (self.todayDateComponents.year == thisDateComponents.year && thisDateComponents.month < self.todayDateComponents.month))) {
+            if (self.disablesDatesEarlierThanToday && ((self.todayDateComponents.year == thisDateComponents.year && self.todayDateComponents.month == thisDateComponents.month && thisDateComponents.day < self.todayDateComponents.day)|| (thisDateComponents.year == self.todayDateComponents.year && thisDateComponents.month < self.todayDateComponents.month) || (thisDateComponents.year < self.todayDateComponents.year))) {
                 button.enabled = NO;
             }
 
@@ -391,8 +391,8 @@ static const NSInteger maxValueForRange = 14;
         [self configureFirstButton:dayButton];
     } else  if (buttonStates[index] == 3) {
         [self configureLastButton:dayButton];
-    } else if (self.indexOfTodayButton == (NSInteger)index) {
-        [self configureTodayButton:dayButton];
+//    } else if (self.indexOfTodayButton == (NSInteger)index) {
+//        [self configureTodayButton:dayButton];
     } else {
         [self configureButton:dayButton];
         if (!dayButton.enabled) {

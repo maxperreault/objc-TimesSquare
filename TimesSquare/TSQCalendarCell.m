@@ -30,7 +30,7 @@
     _calendar = calendar;
     NSString *languageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
     self.layoutDirection = [NSLocale characterDirectionForLanguage:languageCode];
-    self.backgroundColor = [UIColor colorWithRed:0.84f green:0.85f blue:0.86f alpha:1.0f];
+    self.backgroundColor = [UIColor clearColor];
     
     CGFloat onePixel = 1.0f / [UIScreen mainScreen].scale;
     CGFloat twoPixel = 2.0f / [UIScreen mainScreen].scale;
@@ -42,26 +42,30 @@
     });
     self.shadowOffset = shadowOffset;
     self.columnSpacing = twoPixel;
-    self.textColor = [UIColor colorWithRed:0.47f green:0.5f blue:0.53f alpha:1.0f];
-    self.textColorDisabled = [self.textColor colorWithAlphaComponent:0.5f];
-    self.textColorShadow = [UIColor whiteColor];
-    self.shadowColor = [UIColor whiteColor];
+    self.textColor = [UIColor colorWithWhite:1.0f alpha:0.30f];
+    self.textColorDisabled = self.textColor;
+    //self.textColorDisabled = [self.textColor colorWithAlphaComponent:0.5f];
+    //self.textColorShadow = [UIColor whiteColor];
+    //self.shadowColor = [UIColor whiteColor];
+    self.textColorShadow = [UIColor clearColor];
+    self.shadowColor = [UIColor clearColor];
     self.todayTextColor = [UIColor whiteColor];
-    self.todayShadowColor = [UIColor colorWithWhite:0.0f alpha:0.75f];
+    //self.todayShadowColor = [UIColor colorWithWhite:0.0f alpha:0.75f];
+    self.todayShadowColor = [UIColor clearColor];
     self.showsNotThisMonth = YES;
     self.disablesDatesEarlierThanToday = YES;
     
     self.textColorFirstAndlastRangeDay = [UIColor whiteColor];
     self.textColorMiddleRangeDays = [UIColor colorWithRed:28.0f/255.0f green:68.0f/255.0f blue:135.0f/255.0f alpha:1.0];
-    self.textFont = [UIFont systemFontOfSize:14.f];
-    self.smallTextFont = [UIFont systemFontOfSize:10.f];
+    self.textFont = [UIFont fontWithName:@"roboto-regular" size:18.0f];
+    self.smallTextFont = [UIFont fontWithName:@"roboto-regular" size:8.0f];
 
     return self;
 }
 
 + (CGFloat)cellHeight;
 {
-    return 46.0f;
+    return 40.0f;
 }
 
 - (NSUInteger)daysInWeek;

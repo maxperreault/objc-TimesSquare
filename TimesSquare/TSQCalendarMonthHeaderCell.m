@@ -75,7 +75,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
         label.font = [UIFont boldSystemFontOfSize:12.f];
         label.backgroundColor = self.backgroundColor;
         label.textColor = self.textColor;
-        label.shadowColor = [UIColor whiteColor];
+        label.shadowColor = self.shadowColor;
         label.shadowOffset = self.shadowOffset;
         [label sizeToFit];
         headerLabels[ordinality - 1] = label;
@@ -87,7 +87,7 @@ static const CGFloat TSQCalendarMonthHeaderCellMonthsHeight = 20.f;
     self.headerLabels = headerLabels;
     self.textLabel.textAlignment = UITextAlignmentCenter;
     self.textLabel.textColor = self.textColor;
-    self.textLabel.shadowColor = [UIColor whiteColor];
+    self.textLabel.shadowColor = self.shadowColor;
     self.textLabel.shadowOffset = self.shadowOffset;
 }
 
